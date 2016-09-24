@@ -1,0 +1,30 @@
+--- tcp.c      2013-08-29 18:27:25.000000000 +0400
++++ tcp.c       2015-01-20 19:14:03.000000000 +0300
+@@ -513,9 +513,26 @@
+                                   option_len);
+                }
+        }
+-
+        g_in.size = 4096;
+        g_in.data = (uint8 *) xmalloc(g_in.size);
++
++//kostil
++       option_value = 1;
++       option_len = sizeof(option_value);
++       setsockopt (g_sock, SOL_SOCKET, SO_KEEPALIVE, (void *) &option_value, option_len) ;
++
++       option_value = 60;
++       option_len = sizeof(option_value);
++       setsockopt(g_sock, SOL_TCP, TCP_KEEPIDLE, (void*) &option_value, option_len);
++
++       option_value = 30;
++       option_len = sizeof(option_value);
++       setsockopt(g_sock, SOL_TCP, TCP_KEEPINTVL, (void*) &option_value, option_len);
++
++       option_value = 3;
++       option_len = sizeof(option_value);
++       setsockopt(g_sock, SOL_TCP, TCP_KEEPCNT, (void*) &option_value, option_len);
++//end of kostil
+
+        for (i = 0; i < STREAM_COUNT; i++)
+        {
